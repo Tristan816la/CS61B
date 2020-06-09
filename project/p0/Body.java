@@ -35,13 +35,11 @@ public class Body {
     }
 
     public double calcForceExertedByX(Body b) {
-        double result = (this.calcForceExertedBy(b) * (xxPos - b.xxPos)) / calcDistance(b);
-        return result > 0 ? result : -result;
+        return (this.calcForceExertedBy(b) * (b.xxPos - xxPos)) / calcDistance(b);
     }
 
     public double calcForceExertedByY(Body b) {
-        double result = (this.calcForceExertedBy(b) * (yyPos - b.yyPos)) / calcDistance(b);
-        return result > 0 ? result : -result;
+        return (this.calcForceExertedBy(b) * (b.yyPos - yyPos)) / calcDistance(b);
     }
 
     public double calcNetForceExertedByX(Body[] all) {
