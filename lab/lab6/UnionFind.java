@@ -1,12 +1,10 @@
 public class UnionFind {
 
-    private int size;
-    private int[] numbers;
+    public int[] numbers;
 
     /* Creates a UnionFind data structure holding n vertices. Initially, all
        vertices are in disjoint sets. */
     public UnionFind(int n) {
-        size = n;
         numbers = new int[n];
         for (int i = 0; i < numbers.length; i++)
             numbers[i] = -1;
@@ -14,7 +12,7 @@ public class UnionFind {
 
     /* Throws an exception if v1 is not a valid index. */
     private void validate(int vertex) {
-        if (vertex > size || vertex < 0)
+        if (vertex > numbers.length || vertex < 0)
             throw new ArithmeticException("not a valid index.");
     }
 
@@ -59,11 +57,11 @@ public class UnionFind {
         if (connected(v1, v2)) // path compression update
             numbers[v1] = v1Root;
         else if (sizeOf(v1) <= sizeOf(v2)) {
+            numbers[v2Root] += numbers[v1Root];
             numbers[v1Root] = v2Root;
-            numbers[v2Root] -= v1Root;
         } else {
+            numbers[v1Root] += numbers[v2Root];
             numbers[v2Root] = v1Root;
-            numbers[v1Root] -= v2Root;
         }
     }
 
