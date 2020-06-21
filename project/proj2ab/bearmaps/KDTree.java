@@ -1,10 +1,14 @@
 package bearmaps;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
+
 public class KDTree implements PointSet {
+    private Node root;
+
     private class Node {
         Point val;
         int depth;
@@ -20,11 +24,9 @@ public class KDTree implements PointSet {
         Node right;
     }
 
-    private Node root;
-
     public KDTree(List<Point> points) {
-        for (Point p : points) {
-            root = insert(p, root, 0);
+        for (Point point : points) {
+            root = insert(point, root, 0);
         }
     }
 
@@ -66,7 +68,7 @@ public class KDTree implements PointSet {
             goodSide = node.right;
             badeSide = node.left;
         }
-        best = nearest(goodSide, target, best);
+        best = nearest(goodSide, target, best);//first dfs to find the best of goodSide
         if (worthChecking(node, target, best)) {
             best = nearest(badeSide, target, best);
         }
@@ -75,11 +77,13 @@ public class KDTree implements PointSet {
 
     private boolean worthChecking(Node node, Point target, Point best) {
         double bestDis = Point.distance(best, target);
+        double distToBad;
         if (node.depth % 2 == 0) {
-            return node.val.getX() - target.getX() < bestDis;
+            distToBad = Point.distance(new Point(node.val.getX(), target.getY()), target);
         } else {
-            return node.val.getY() - target.getY() < bestDis;
+            distToBad = Point.distance(new Point(target.getX(), node.val.getY()), target);
         }
+        return Double.compare(distToBad, bestDis) < 0;
     }
 
     // Return true if a is at upper or left position of b

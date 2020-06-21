@@ -16,6 +16,7 @@ public class NaivePointSet implements PointSet {
         double shortest = Point.distance(target, result);
         for (Point p : allPoints) {
             if (Point.distance(p, target) < shortest) {
+                shortest = Point.distance(p, target);
                 result = p;
             }
         }
